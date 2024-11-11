@@ -1,0 +1,49 @@
+{% include "base.html" %}
+
+<div class="container mt-5 mb-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-sm">
+                <img src="{{ blog.photo.url }}" class="card-img-top rounded-lg" alt="{{ blog.title }}">
+                <div class="card-body">
+                    <h2 class="card-title text-3xl font-bold mb-2">{{ blog.title }}</h2>
+                    <h5 class="text-muted text-lg">By <span class="font-semibold">{{ blog.author.username }}</span></h5>
+                    <p class="card-text mt-4 text-lg">{{ blog.content }}</p> <!-- Full blog content -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="row mt-6">
+        <div class="col-md-8 offset-md-2">
+            <h3 class="text-2xl font-semibold mb-4">Comments</h3>
+
+            <!-- Display existing comments (no login required to view) -->
+            {% for comment in blog.comments.all %}
+                <div class="comment mt-6 bg-gray-100 p-4 rounded-lg shadow-lg">
+                    <div>
+                        <p class="font-semibold text-lg text-gray-800"><strong>{{ comment.username }}</strong>:</p>
+                    </div>
+                    <p class="text-gray-700 mt-2">{{ comment.text }}</p>
+                </div>
+            {% empty %}
+                <p class="text-gray-600 mt-4">No comments yet. Be the first to comment!</p>
+            {% endfor %}
+            
+            <!-- Add a comment form only for logged-in users -->
+            {% if user.is_authenticated %}
+                <h4 class="mt-6 text-xl font-semibold">Add a Comment:</h4>
+                <form method="POST" class="bg-white p-4 rounded-lg shadow-md mt-4">
+                    {% csrf_token %}
+                    <div class="form-group mb-4">
+                        <textarea name="comment_text" class="form-control w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" rows="4" placeholder="Write your comment..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-2 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none">Post Comment</button>
+                </form>
+            {% else %}
+                <p class="mt-6 text-gray-600">You must be logged in to post a comment. <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Login</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>

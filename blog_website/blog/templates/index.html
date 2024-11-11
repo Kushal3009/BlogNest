@@ -1,0 +1,26 @@
+{% include "base.html" %}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Blogs</h1>
+    
+    <div class="row">
+        {% for blog in blogs %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ blog.photo.url }}" class="card-img-top" alt="{{ blog.title }}" style="height: 200px; object-fit: cover;"> <!-- Display blog image -->
+                    <div class="card-body d-flex flex-column">  <!-- flex-column to stack elements vertically -->
+                        <div class="mb-3">
+                            <h5 class="card-text text-muted"><b style="text-decoration: underline">Author</b>
+                                {{ blog.author.username }}</h5>  <!-- Author's name with muted color -->
+                        </div>
+                        <div class="mb-3">
+                            <h3 class="card-title">{{ blog.title }}</h3>  <!-- Blog title with margin bottom -->
+                            <p class="card-text">{{ blog.content|truncatewords:30 }}</p>  <!-- Truncated content -->
+                        </div>
+                        <a href="{% url 'view_blog' blog.id %}" class="btn btn-primary mt-auto">View</a>  <!-- View button to show full blog -->
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

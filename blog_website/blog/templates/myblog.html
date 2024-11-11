@@ -1,0 +1,34 @@
+{% include "base.html" %}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-4">My Blog Posts</h1>
+    <a href="{% url 'create_blog' %}" class="btn btn-success mb-3">Create New Blog</a>
+    
+    <div class="row">
+        {% for blog in blogs %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ blog.photo.url }}" class="card-img-top" alt="{{ blog.title }}" style="max-height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ blog.title }}</h5>
+                        <p class="card-text">{{ blog.content|truncatewords:30 }}</p> <!-- Truncate content for preview -->
+                        <p class="card-text">
+                            <strong>Category:</strong> 
+                            {% if blog.category %}
+                                {{ blog.category.name }}
+                            {% else %}
+                                Uncategorized
+                            {% endif %}
+                        </p>
+                        <div class="d-flex justify-content-between">
+                            <a href="{% url 'edit_blog' blog.id %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'delete_blog' blog.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>You haven't created any blog posts yet.</p>
+        {% endfor %}
+    </div>
+</div>
